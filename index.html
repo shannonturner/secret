@@ -43,11 +43,8 @@
 
 <div class="container-fluid">
 
-    <div class="col-lg-10">
-        <canvas id="secret" style="width: 100%; height: 100%;"></canvas>
-    </div> <!-- /.col-lg-10 -->
-
     <div class="col-lg-2 text-center">
+        <h1 class="visible-xs visible-sm">(psst &mdash; are you on your phone? you need a keyboard to use this site ... come back later on your laptop or desktop)</h3>
         <h2>Free yourself from the burden of your secrets</h2>
         <hr>
         <h4>Start typing your secret now. As you do, an image will be created for you.</h4>
@@ -73,7 +70,11 @@
         <hr>
         <h4>#MyOpenSecret</h4>
 
-    </div>
+    </div> <!-- /.col-lg-2.text-center -->
+
+    <div class="col-lg-10">
+        <canvas id="secret" style="width: 100%; height: 100%;"></canvas>
+    </div> <!-- /.col-lg-10 -->
 
 </div>
 
@@ -148,6 +149,13 @@
     function clearSecret() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         message = "";
+
+        // Remove focus from the button so that if you press space it doesn't reset again
+        // There's not a better way to remove the focus than this
+        $("#reset").hide();
+        setTimeout(function() {
+            $("#reset").show();
+        }, 500);
     }
 
     $("#reset").click(function() {
@@ -156,10 +164,13 @@
 
     var message = "";
     document.onkeypress = function (key) {
-        if (window.event) { // IE
+        if (window.event) {
+            // Prevent spacebar from scrolling the page slightly
+            if (key.keyCode == 32 && key.target == document.body) {
+                message += ' ';
+                key.preventDefault();
+            }
             message += String.fromCharCode(key.keyCode);
-        } else if (key.which) {
-            message += key.which;
         }
         drawSecret(Sha256.hash(message));
     };
