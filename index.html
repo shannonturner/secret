@@ -1,0 +1,170 @@
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Free yourself from the burden of your secrets. Share them out in the open.">
+
+    <meta property="og:title" content="An Open Secret">
+    <meta property="og:site_name" content="An Open Secret">
+    <meta property="og:url" content="http://shannonvturner.com/secret">
+    <meta property="og:type" content="website">
+    <meta property="fb:app_id" content="">
+    <meta property="og:description" content="Free yourself from the burden of your secrets. Share them out in the open.">
+    <meta property="og:image" content="http://shannonvturner.com/secret/secretimage.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="http://shannonvturner.com/secret">
+    <meta name="twitter:creator" content="@svthmc">
+    <meta name="twitter:title" content="An Open Secret">
+    <meta name="twitter:description" content="Free yourself from the burden of your secrets. Share them out in the open.">
+    <meta name="twitter:image:src" content="http://shannonvturner.com/secret/secretimage.png">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <title>An Open Secret</title>
+
+    <link rel="icon" href="http://shannonvturner.com/secret/favicon.ico">
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-49936574-3', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+    <div class="col-lg-10">
+        <canvas id="secret" style="width: 100%; height: 100%;"></canvas>
+    </div> <!-- /.col-lg-10 -->
+
+    <div class="col-lg-2 text-center">
+        <h2>Free yourself from the burden of your secrets</h2>
+        <hr>
+        <h4>Start typing your secret now. As you do, an image will be created for you.</h4>
+        <hr>
+        <h4>When you're finished, right click and save your image.</h4>
+        <hr>
+        <h4>Your secret image is probably unique and undecipherable. But the world is a big place, and if someone has the exact same secret image as you, the two of you will know.</h4>
+        <hr>
+        <!-- Share buttons -->
+        
+        <!-- Facebook like button -->
+        <div class="fb-like" data-href="http://shannonvturner.com/secret" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+
+        <!-- Tumblr button -->
+        <a class="tumblr-share-button" data-color="blue" data-notes="right" href="https://embed.tumblr.com/share"></a> <script>!function(d,s,id){var js,ajs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://secure.assets.tumblr.com/share-button.js";ajs.parentNode.insertBefore(js,ajs);}}(document, "script", "tumblr-js");</script>
+
+        <!-- Tweet button -->
+        <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+        <hr>
+        <h4>#MyOpenSecret</h4>
+
+    </div>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="js/sha256.js"></script>
+<script>
+
+    var canvas = document.getElementById('secret');
+    var context = canvas.getContext('2d');
+
+    var viewportWidth = window.innerWidth;
+    var viewportHeight = window.innerHeight;
+
+    // canvas.height = viewportHeight;
+    // canvas.width = viewportWidth;
+
+    canvas.width = 1440;
+    canvas.height = 900;
+
+    // 16 rows
+    var rowHeight = parseInt(canvas.height / 16);
+
+    // Get 1% of a row's width, for calculating bar widths
+    var onePctWidth = parseInt(canvas.width / 100);
+    
+    // in a word: ba78
+    // position 1: color of 1st bar and width of 3rd bar
+    // position 2: color of background and width of 1st bar
+    // position 3: color of 2nd bar and width of spacing between 1st and 2nd bars
+    // position 4: width of 2nd bar and color of 3rd bar
+
+    function drawSecret(hash) {
+        colors = [  '#E45', '#E64', '#EC6', '#6E4', 
+                    '#8DE', '#99E', '#B8E', '#C5C', // Rainbow
+                    '#28B', '#7FD', '#2CC', '#000',
+                    '#6BA', '#5AB', '#66A', '#647'
+        ];
+
+        for (var i=0;i<=hash.length;i+=4) {
+
+            // Set background color
+            context.fillStyle = colors[parseInt("0x"+hash[i+1])];
+            // Create background (a full-width Rectangle of that color)
+            context.fillRect(0, i/4 * rowHeight, viewportWidth, rowHeight);
+
+            // Set color of 1st bar
+            context.fillStyle = colors[parseInt("0x"+hash[i])];
+            // Create 1st bar
+            context.fillRect(parseInt("0x"+hash[i+1]) * onePctWidth, i/4 * rowHeight, parseInt("0x"+hash[i+1]) * onePctWidth, rowHeight);
+
+            // Set width of spacing beteen 1st and 2nd bars
+            var spacing = parseInt("0x"+hash[i+2]) * onePctWidth;
+            spacing += (parseInt("0x"+hash[i+1]) * onePctWidth * 4); // Position of 1st bar
+
+            // Set color of 2nd bar
+            context.fillStyle = colors[parseInt("0x"+hash[i+2])];
+            // Create 2nd bar
+            context.fillRect(spacing, i/4 * rowHeight, parseInt("0x"+hash[i+3]) * onePctWidth, rowHeight);
+
+            // Set color of 3rd bar
+            context.fillStyle = colors[parseInt("0x"+hash[i+3])];
+            // Determine position of 3rd bar
+            spacing = spacing + (parseInt("0x"+hash[i+3]) * onePctWidth * 4)
+            // Create 3rd bar
+            context.fillRect(spacing, i/4 * rowHeight, parseInt("0x"+hash[i]) * onePctWidth, rowHeight);
+
+        }
+    }
+
+    var message = "";
+    document.onkeypress = function (key) {
+        if (window.event) { // IE
+            message += String.fromCharCode(key.keyCode);
+        } else if (key.which) {
+            message += key.which;
+        }
+        drawSecret(Sha256.hash(message));
+    };
+
+</script>
+
+<!-- Facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+</body>
+</html>
