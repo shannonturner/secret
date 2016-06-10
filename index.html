@@ -56,10 +56,12 @@
         <hr>
         <h4>Your secret image is probably unique and undecipherable. But the world is a big place, and if someone has the exact same secret image as you, the two of you will know.</h4>
         <hr>
+        <!-- Reset button -->
+        <button id="reset" class="btn btn-info">Reset Image</button>
+        <hr>
         <!-- Share buttons -->
-        
         <!-- Facebook like button -->
-        <div class="fb-like" data-href="http://shannonvturner.com/secret" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+        <div class="fb-like" data-href="http://shannonvturner.com/secret" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
 
         <!-- Tumblr button -->
         <a class="tumblr-share-button" data-color="blue" data-notes="right" href="https://embed.tumblr.com/share"></a> <script>!function(d,s,id){var js,ajs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://secure.assets.tumblr.com/share-button.js";ajs.parentNode.insertBefore(js,ajs);}}(document, "script", "tumblr-js");</script>
@@ -142,6 +144,15 @@
 
         }
     }
+
+    function clearSecret() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        message = "";
+    }
+
+    $("#reset").click(function() {
+        clearSecret();
+    });
 
     var message = "";
     document.onkeypress = function (key) {
