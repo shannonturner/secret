@@ -44,10 +44,11 @@
 <div class="container-fluid">
 
     <div class="col-lg-2 text-center">
-        <h1 class="visible-xs visible-sm">(psst &mdash; are you on your phone? you need a keyboard to use this site ... come back later on your laptop or desktop)</h3>
         <h2>Free yourself from the burden of your secrets</h2>
         <hr>
-        <h4>Start typing your secret now. As you do, an image will be created for you.</h4>
+        <h4 class="hidden-xs hidden-sm">Start typing your secret now. As you do, an image will be created for you.</h4>
+        <h4 class="visible-xs visible-sm">Start typing your secret now. As you do, an image will be created for you below.</h4>
+        <input id="mobile-textbox" type="password" class="visible-xs visible-sm" style="width: 100%;">
         <hr>
         <h4>When you're finished, right click and save your image.</h4>
         <hr>
@@ -148,6 +149,7 @@
 
     function clearSecret() {
         context.clearRect(0, 0, canvas.width, canvas.height);
+        $("#mobile-textbox").val("")
         message = "";
 
         // Remove focus from the button so that if you press space it doesn't reset again
@@ -171,9 +173,40 @@
                 key.preventDefault();
             }
             message += String.fromCharCode(key.keyCode);
+        } else if (key.key) { // For compatibility with Firefox
+            if (key.key == ' ' || key.key == "'") {
+                // The quote key brings up a search box in Firefox
+                message += key.key;
+                key.preventDefault();
+            } else if (key.key == 'Enter') {
+                message += '\n';
+            } else if (key.key == 'ArrowLeft' || key.key == 'ArrowDown' || key.key == 'ArrowUp' || key.key == 'ArrowRight') {
+                // Do nothing
+            } else if (key.key == 'Backspace') {
+                message = message.slice(0, -1);
+            } else if (key.key == 'Tab') {
+                message += '\t';
+            } else {
+                message += key.key;
+            }
         }
         drawSecret(Sha256.hash(message));
+        console.log(message);
     };
+
+    // On Chrome, need to use document.onkeydown instead of onkeypress to handle Backspace and Tab
+    // But can't use .onkeydown for normal typing or letter case is not preserved
+    document.onkeydown = function(key) {
+        if (window.event && key.keyCode == 8 && key.target == document.body) {
+            message = message.slice(0, message.length-1);
+            key.preventDefault();
+            drawSecret(Sha256.hash(message));
+        } else if (key.keyCode == 9 && key.target == document.body) {
+            message += '\t';
+            key.preventDefault();
+            drawSecret(Sha256.hash(message));
+        }
+    }
 
 </script>
 
