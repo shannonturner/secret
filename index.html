@@ -191,7 +191,6 @@
             }
         }
         drawSecret(Sha256.hash(message));
-        console.log(message);
     };
 
     // On Chrome, need to use document.onkeydown instead of onkeypress to handle Backspace and Tab
@@ -207,6 +206,13 @@
             drawSecret(Sha256.hash(message));
         }
     }
+
+    // Certain mobile browsers don't capture document.onkeydown or document.onkeypress properly
+    // So we'll check for if the input textfield has changed instead (since the textfield only appears on mobile it's fine)
+    $("#mobile-textbox").change(function() {
+        message = $("#mobile-textbox").val();
+        drawSecret(Sha256.hash(message));
+    });
 
 </script>
 
