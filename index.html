@@ -50,7 +50,8 @@
         <h4 class="visible-xs visible-sm">Start typing your secret now. As you do, an image will be created for you below.</h4>
         <input id="mobile-textbox" type="password" class="visible-xs visible-sm" style="width: 100%;">
         <hr>
-        <h4>When you're finished, right click and save your image.</h4>
+        <h4 class="hidden-xs hidden-sm">When you're finished, right click and save your image.</h4>
+        <h4 class="visible-xs visible-sm">When you're finished, <a id="download-link" href="#">click here to save your image.</a></h4>
         <hr>
         <h4>Your secret image is probably unique and undecipherable. But the world is a big place, and if someone has the exact same secret image as you, the two of you will know.</h4>
         <hr>
@@ -67,9 +68,6 @@
         <!-- Tweet button -->
         <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-        <hr>
-        <h4>#MyOpenSecret</h4>
 
     </div> <!-- /.col-lg-2.text-center -->
 
@@ -207,6 +205,15 @@
         message = $("#mobile-textbox").val();
         drawSecret(Sha256.hash(message));
     });
+
+    function downloadCanvas(link, canvasId, filename) {
+        link.href = document.getElementById(canvasId).toDataURL();
+        link.download = filename;
+    }
+
+    document.getElementById('download-link').addEventListener('click', function() {
+        downloadCanvas(this, 'secret', 'test.png');
+    }, false);
 
 </script>
 
