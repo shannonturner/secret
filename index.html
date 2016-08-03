@@ -87,6 +87,8 @@
     var canvas = document.getElementById('secret');
     var context = canvas.getContext('2d');
 
+    $("#secret-img").attr("src", canvas.toDataURL());
+
     canvas.width = 1440;
     canvas.height = 900;
 
@@ -146,6 +148,7 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
         $("#mobile-textbox").val("")
         message = "";
+        $("#secret-img").attr("src", canvas.toDataURL());
 
         // Remove focus from the button so that if you press space it doesn't reset again
         // There's not a better way to remove the focus than this
