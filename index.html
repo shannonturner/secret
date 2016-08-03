@@ -88,12 +88,6 @@
     var canvas = document.getElementById('secret');
     var context = canvas.getContext('2d');
 
-    var viewportWidth = window.innerWidth;
-    var viewportHeight = window.innerHeight;
-
-    // canvas.height = viewportHeight;
-    // canvas.width = viewportWidth;
-
     canvas.width = 1440;
     canvas.height = 900;
 
@@ -121,7 +115,7 @@
             // Set background color
             context.fillStyle = colors[parseInt("0x"+hash[i+1])];
             // Create background (a full-width Rectangle of that color)
-            context.fillRect(0, i/4 * rowHeight, viewportWidth, rowHeight);
+            context.fillRect(0, i/4 * rowHeight, canvas.width, rowHeight);
 
             // Set color of 1st bar
             context.fillStyle = colors[parseInt("0x"+hash[i])];
