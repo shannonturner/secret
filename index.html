@@ -51,7 +51,7 @@
         <input id="mobile-textbox" type="password" class="visible-xs visible-sm" style="width: 100%;">
         <hr>
         <h4 class="hidden-xs hidden-sm">When you're finished, right click and save your image.</h4>
-        <h4 class="visible-xs visible-sm">When you're finished, <a id="download-link" href="#">click here to save your image.</a></h4>
+        <h4 class="visible-xs visible-sm">When you're finished, touch and hold to save your image.</a></h4>
         <hr>
         <h4>Your secret image is probably unique and undecipherable. But the world is a big place, and if someone has the exact same secret image as you, the two of you will know.</h4>
         <hr>
@@ -72,7 +72,8 @@
     </div> <!-- /.col-lg-2.text-center -->
 
     <div class="col-lg-10">
-        <canvas id="secret" style="width: 100%; height: 100%;"></canvas>
+        <canvas id="secret" style="width: 100%; height: 100%;" class="hidden-xs hidden-sm"></canvas>
+        <img id="secret-img" style="width: 100%; height: 100%;" class="visible-xs visible-sm">
     </div> <!-- /.col-lg-10 -->
 
 </div>
@@ -137,6 +138,8 @@
             context.fillRect(spacing, i/4 * rowHeight, parseInt("0x"+hash[i]) * onePctWidth, rowHeight);
 
         }
+
+        $("#secret-img").attr("src", canvas.toDataURL());
     }
 
     function clearSecret() {
@@ -206,14 +209,14 @@
         drawSecret(Sha256.hash(message));
     });
 
-    function downloadCanvas(link, canvasId, filename) {
-        link.href = document.getElementById(canvasId).toDataURL();
-        link.download = filename;
-    }
+    // function downloadCanvas(link, canvasId, filename) {
+    //     link.href = document.getElementById(canvasId).toDataURL();
+    //     link.download = filename;
+    // }
 
-    document.getElementById('download-link').addEventListener('click', function() {
-        downloadCanvas(this, 'secret', 'test.png');
-    }, false);
+    // document.getElementById('download-link').addEventListener('click', function() {
+    //     downloadCanvas(this, 'secret', 'test.png');
+    // }, false);
 
 </script>
 
